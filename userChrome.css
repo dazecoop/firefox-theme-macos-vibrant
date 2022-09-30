@@ -1,3 +1,13 @@
+#TabsToolbar-customization-target {
+  padding-left: 10px;
+}
+
+#personal-toolbar-empty-description,
+#PersonalToolbar .toolbarbutton-1,
+toolbarbutton.bookmark-item:not(.subviewbutton) {
+  padding: var(--bookmark-block-padding) 2px !important;
+}
+
 #main-window
 {
     background: transparent !important;
