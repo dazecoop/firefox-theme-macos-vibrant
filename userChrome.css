@@ -5,6 +5,7 @@
 #personal-toolbar-empty-description,
 #PersonalToolbar .toolbarbutton-1,
 toolbarbutton.bookmark-item:not(.subviewbutton) {
+  /* margin: 2px 1px !important; */
   padding: var(--bookmark-block-padding) 2px !important;
 }
 
@@ -80,6 +81,7 @@ toolbarbutton.bookmark-item:not(.subviewbutton) {
 .tabbrowser-tab {
     /* margin-left: 15px !important; */
     /* margin-right: 4px !important; */
+    font-size: 12px !important;
 }
 .tabbrowser-tab:not([visuallyselected="true"]), .tabbrowser-tab:-moz-lwtheme {
 
