@@ -150,7 +150,7 @@ tab[selected="true"] .tab-background {
 }
 
 .bookmark-item:hover{
-  background-color: transparent !important;
+  /* background-color: transparent !important; */
 }
 
 
