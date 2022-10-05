@@ -241,3 +241,43 @@ tab[selected="true"] .tab-background {
 }
 
 tab[pending], #alltabs-popup menuitem[pending] {background-color:  rgba(80, 80, 80,0.3)  !important;}
+
+
+
+
+/*
+ * Compact findbar at the top of the window
+ * @source https://github.com/Timvde/UserChrome-Tweaks/blob/72145b152c50341f64dcbb00d902b29fbc2a7a10/findbar/compact-findbar-on-top.css
+ *
+ * Contributor(s): Madis0
+ */
+
+ .browserContainer > findbar {
+  -moz-box-ordinal-group: 0;
+  position: fixed !important;
+  right: 1em;
+  border: 1px solid threedshadow !important;
+
+  /* Hide the "border" at the top by removing the box-shadow and background-image */
+  border-top: none !important;
+  box-shadow: none !important;
+  background-image: none !important;
+
+  /* Uncomment to add a transition from the top */
+  /*
+  transition: 400ms !important;
+  z-index: 0 !important;
+  */
+}
+
+/* Margin from top when hidden (necessary for the transition to work) */
+/*findbar[hidden]{ margin-top: -2em !important; }*/
+
+/* Aligns the close button to the center */
+.findbar-closebutton {
+  margin-inline-start: 0.5em !important;
+  vertical-align: middle !important;
+  margin-bottom: 0.25em !important;
+  height: inherit !important;
+}
+
