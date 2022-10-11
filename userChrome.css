@@ -1,3 +1,8 @@
+#sidebar {
+  max-width: none !important;
+  min-width: 0px !important;
+}
+
 .findbar-textbox {
   font-size: 13px !important;
 }
