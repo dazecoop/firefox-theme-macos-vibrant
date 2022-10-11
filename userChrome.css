@@ -1,6 +1,12 @@
 #sidebar {
   max-width: none !important;
   min-width: 0px !important;
+  box-shadow: 0px 0px 25px rgba(0,0,0,.25);
+  position: relative;
+}
+#sidebar-splitter {
+  position: relative;
+  z-index: 1;
 }
 
 .findbar-textbox {
