@@ -265,8 +265,6 @@ tab[pending], #alltabs-popup menuitem[pending] {background-color:  rgba(80, 80, 
 
  .browserContainer > findbar {
   -moz-box-ordinal-group: 0;
-  position: fixed !important;
-  right: 1em;
   border: 1px solid threedshadow !important;
 
   /* Hide the "border" at the top by removing the box-shadow and background-image */
