@@ -294,3 +294,13 @@ tab[pending], #alltabs-popup menuitem[pending] {background-color:  rgba(80, 80, 
   height: inherit !important;
 }
 
+
+
+box#navigator-toolbox-background {
+  background: linear-gradient(0deg, rgb(20, 20, 20) 0%, rgb(70, 70, 70) 100%);
+}
+toolbar#nav-bar,
+toolbar#PersonalToolbar {
+  background: transparent !important;
+  box-shadow: none !important;
+}
