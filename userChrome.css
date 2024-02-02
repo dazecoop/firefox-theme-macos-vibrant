@@ -29,7 +29,7 @@ toolbarbutton.bookmark-item:not(.subviewbutton) {
 
 #main-window
 {
-    background: transparent !important;
+    /* background: transparent !important; */
 }
 
 #TabsToolbar,
@@ -70,11 +70,13 @@ toolbarbutton.bookmark-item:not(.subviewbutton) {
 #PersonalToolbar,
 #titlebar
 {
+  background: #111;
  -moz-appearance: -moz-mac-vibrant-titlebar-dark !important;
  -moz-font-smoothing-background-color: -moz-mac-vibrant-titlebar-dark !important;
 }
 
 #TabsToolbar, #nav-bar, #PersonalToolbar {
+  background: #111;
  -moz-appearance: -moz-mac-vibrancy-dark !important;
 }
 
