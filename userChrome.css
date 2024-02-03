@@ -35,6 +35,9 @@ toolbarbutton.bookmark-item:not(.subviewbutton) {
   /* margin: 2px 1px !important; */
   padding: var(--bookmark-block-padding) 2px !important;
 }
+toolbarbutton {
+  background: none;
+}
 
 #main-window
 {
@@ -205,7 +208,11 @@ tab[selected="true"] .tab-background {
 
 .bookmark-item:hover > .toolbarbutton-icon
 {
-	background-color: rgba(100,100,100,0.9) !important;
+	/* background-color: rgba(100,100,100,0.9) !important; */
+	background-color: transparent !important;
+}
+.toolbarbutton-text:not([value=""]) {
+  padding-right: .75rem !important;
 }
 
 .bookmark-item:active
@@ -263,6 +270,10 @@ tab[selected="true"] .tab-background {
 
 #forward-button:hover{
   border-radius: 30px !important;
+}
+
+#PlacesToolbar {
+  padding-bottom: 2px;
 }
 
 #PlacesToolbarItems {
