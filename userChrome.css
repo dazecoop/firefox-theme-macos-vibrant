@@ -332,3 +332,12 @@ toolbar#PersonalToolbar {
   background: transparent !important;
   box-shadow: none !important;
 }
+#PersonalToolbar {
+  padding-inline: 0 !important;
+}
+
+#personal-bookmarks,
+#nav-bar-customization-target,
+#PanelUI-button {
+  background: rgb(40,40,40) !important;
+}
