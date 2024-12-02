@@ -1,3 +1,6 @@
+toolbar {
+  background: transparent !important;
+}
 toolbar menupopup {
   --panel-background: rgba(30,30,30,.9) !important;
 }
