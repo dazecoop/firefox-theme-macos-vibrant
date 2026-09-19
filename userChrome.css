@@ -1,37 +1,201 @@
+/* ============================================================
+ * macOS Vibrant — userChrome.css
+ * Personal fork of Tnings/MacosVibrant
+ * https://github.com/dazecoop/firefox-theme-macos-vibrant
+ *
+ * Table of contents:
+ *   1. Variables
+ *   2. Window chrome / toolbox background
+ *   3. Titlebar & tabs
+ *   4. URL bar
+ *   5. Bookmarks toolbar & toolbar buttons
+ *   6. Sidebar
+ *   7. Find bar (grid-based layout — see inline notes)
+ *   8. Miscellaneous / overrides
+ * ============================================================ */
+
+
+/* ------------------------------------------------------------
+ * 1. Variables
+ * Reused values pulled out so a future tweak is a one-line change
+ * instead of a find/replace across the file.
+ * ------------------------------------------------------------ */
+:root {
+  --uc-radius-pill: 30px;              /* the rounded "pill" shape used on buttons, tabs, urlbar */
+  --uc-radius-circle: 50px;            /* fully-round tab background */
+  --uc-toolbar-bg: #111;               /* dark toolbar background */
+  --uc-panel-bg: rgba(30, 30, 30, .9); /* translucent dark panel — menus, findbar */
+  --uc-shadow-soft: rgba(0, 0, 0, .25);/* soft ambient shadow used on sidebar + findbar */
+}
+
+
+/* ------------------------------------------------------------
+ * 2. Window chrome / toolbox background
+ * ------------------------------------------------------------ */
 toolbar {
   background: transparent !important;
 }
 toolbar menupopup {
-  --panel-background: rgba(30,30,30,.9) !important;
+  --panel-background: var(--uc-panel-bg) !important;
 }
 
-.urlbarView-row[selected]
-{
-  background-color: rgba(0,0,0,.7) !important;
+#navigator-toolbox {
+  background-color: transparent !important;
 }
 
-#sidebar {
-  max-width: none !important;
-  min-width: 0px !important;
-  box-shadow: 0px 0px 25px rgba(0,0,0,.25);
-  position: relative;
-}
-#sidebar-box {
-  max-width: none !important;
-}
-#sidebar-splitter {
-  position: relative;
-  z-index: 1;
+#main-window {
+  /* background: transparent !important; */
 }
 
-.findbar-textbox {
-  font-size: 13px !important;
+.urlbarView-row[selected] {
+  background-color: rgba(0, 0, 0, .7) !important;
+}
+
+
+/* ------------------------------------------------------------
+ * 3. Titlebar & tabs
+ * ------------------------------------------------------------ */
+
+/* macOS vibrancy on the tabs toolbar */
+#TabsToolbar,
+.table-widget-empty-text {
+  -moz-appearance: -moz-mac-vibrant-titlebar-light !important;
+}
+#TabsToolbar:-moz-lwtheme-brighttext,
+.table-widget-empty-text:-moz-lwtheme-brighttext {
+  -moz-appearance: -moz-mac-vibrant-titlebar-dark !important;
+}
+
+/* Dark toolbar backgrounds (menubar, nav-bar, bookmarks toolbar) */
+:root #nav-bar,
+#PersonalToolbar,
+#titlebar {
+  background: var(--uc-toolbar-bg);
+  -moz-appearance: -moz-mac-vibrant-titlebar-dark !important;
+  -moz-font-smoothing-background-color: -moz-mac-vibrant-titlebar-dark !important;
+}
+#TabsToolbar,
+#nav-bar,
+#PersonalToolbar {
+  background: var(--uc-toolbar-bg);
+  -moz-appearance: -moz-mac-vibrancy-dark !important;
+}
+
+/* NOTE: #titlebar's background above is currently overridden by the
+   gradient rule in section 8 (later rules win on equal specificity) —
+   left as-is rather than removed in case you want to swap which one wins. */
+
+#titlebar #TabsToolbar {
+  padding: 6px 0px 2px 6px !important;
+  background: rgba(var(--accent-color), 1) !important;
+}
+.titlebar-spacer[type="pre-tabs"] {
+  /* border: 0 !important; */
+  display: none;
+}
+
+/* Simplified tab look — no selection underline/border, smaller label */
+.tab-line {
+  height: 0px !important;
+}
+#tabbrowser-tabs:not([movingtab]) > .tabbrowser-tab[beforeselected-visible]::after,
+#tabbrowser-tabs[movingtab] > .tabbrowser-tab[visuallyselected]::before,
+.tabbrowser-tab[visuallyselected]::after {
+  opacity: 0 !important;
+}
+.tabbrowser-tab::after,
+.tabbrowser-tab::before {
+  border-left: 0 !important;
+  opacity: 0 !important;
+}
+.tabbrowser-tab {
+  /* margin-left: 15px !important; */
+  /* margin-right: 4px !important; */
+  font-size: 12px !important;
+}
+
+/* Pill-shaped tab background */
+.tabbrowser-tab > .tab-stack > .tab-background {
+  border-radius: var(--uc-radius-circle) !important;
+}
+.tabbrowser-tab > .tab-stack > .tab-background:not([selected="true"]) {
+  transition: all 0.3s ease !important;
+}
+.tabbrowser-tab:hover > .tab-stack > .tab-background:not([selected="true"]) {
+  border-color: rgba(0, 0, 0, 1) !important;
+}
+.tabbrowser-tab[selected="true"] .tab-background:-moz-lwtheme-brighttext {
+  box-shadow: inset 0em -4em 0em var(--toolbar-bgcolor) !important;
+}
+#TabsToolbar #firefox-view-button[open] > .toolbarbutton-icon,
+.tab-background:is([selected], [multiselected]) {
+  background-color: rgba(255, 255, 255, .1) !important;
+}
+
+/* Tab label colors */
+.tabbrowser-tab[selected="true"] .tab-label:-moz-lwtheme-brighttext {
+  color: white !important;
+}
+.tabbrowser-tab .tab-label:-moz-lwtheme-brighttext {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Tab close button */
+.tab-close-button {
+  transition: all 0.3s ease !important;
+  border-radius: var(--uc-radius-pill) !important;
+  transform: translate(-3px, 0px);
+}
+.tab-close-button:hover {
+  fill-opacity: 0.2 !important;
+}
+
+/* Pending (unloaded) tabs */
+tab[pending],
+#alltabs-popup menuitem[pending] {
+  background-color: rgba(80, 80, 80, 0.3) !important;
+}
+
+/* New tab button */
+#tabs-newtab-button .toolbarbutton-icon {
+  border-radius: var(--uc-radius-pill) !important;
+  transition-property: background-color;
+  transition-duration: 0.5s;
+}
+#tabs-newtab-button:hover .toolbarbutton-icon {
+  background-color: rgba(130, 130, 130, 0.5) !important;
+}
+#tabs-newtab-button:active .toolbarbutton-icon {
+  background-color: rgba(180, 180, 180, 0.7) !important;
+  color: rgba(110, 110, 110, 0.7) !important;
 }
 
 #TabsToolbar-customization-target {
   padding-left: 10px;
 }
 
+
+/* ------------------------------------------------------------
+ * 4. URL bar
+ * ------------------------------------------------------------ */
+#urlbar-background {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  padding: 1px !important;
+  background: #404040 !important;
+  box-shadow: inset 0px 0px 1px 0px #e3e3e3 !important;
+  border-radius: var(--uc-radius-pill) !important;
+  border-color: #1a1a1a !important;
+}
+#urlbar:-moz-lwtheme,
+#navigator-toolbox #searchbar:-moz-lwtheme {
+  color: #FFFFFF !important;
+}
+
+
+/* ------------------------------------------------------------
+ * 5. Bookmarks toolbar & toolbar buttons
+ * ------------------------------------------------------------ */
 #personal-toolbar-empty-description,
 #PersonalToolbar .toolbarbutton-1,
 toolbarbutton.bookmark-item:not(.subviewbutton) {
@@ -42,279 +206,130 @@ toolbarbutton {
   background: none;
 }
 
-#main-window
-{
-    /* background: transparent !important; */
+.bookmark-item {
+  border-radius: var(--uc-radius-pill) !important;
+  transform: translate(0, -1px);
 }
-
-#TabsToolbar,
-.table-widget-empty-text
-{
-    -moz-appearance: -moz-mac-vibrant-titlebar-light !important;
- }
-
-#TabsToolbar:-moz-lwtheme-brighttext,
-.table-widget-empty-text:-moz-lwtheme-brighttext
-{
-    -moz-appearance: -moz-mac-vibrant-titlebar-dark !important;
- }
-
-.tabbrowser-tab[selected="true"] .tab-label:-moz-lwtheme-brighttext
-{
-    color:white !important;
-}
-
-.tabbrowser-tab .tab-label:-moz-lwtheme-brighttext
-{
-    color:rgba(255,255,255,0.7) !important;
-}
-
-
-.tabbrowser-tab[selected="true"] .tab-background:-moz-lwtheme-brighttext
-{
-    box-shadow: inset 0em -4em 0em var(--toolbar-bgcolor) !important;
-}
-
-#navigator-toolbox {
-    background-color: transparent !important;
-}
-
-/* menubar + bookmarks */
-
-:root #nav-bar,
-#PersonalToolbar,
-#titlebar
-{
-  background: #111;
- -moz-appearance: -moz-mac-vibrant-titlebar-dark !important;
- -moz-font-smoothing-background-color: -moz-mac-vibrant-titlebar-dark !important;
-}
-
-#TabsToolbar, #nav-bar, #PersonalToolbar {
-  background: #111;
- -moz-appearance: -moz-mac-vibrancy-dark !important;
-}
-
-/* simplify tabs */
-
-#titlebar #TabsToolbar {
-	padding: 6px 0px 2px 6px !important;
-	background: rgba(var(--accent-color), 1) !important;
-}
-.titlebar-spacer[type="pre-tabs"] {
-	/* border: 0 !important; */
-	display: none;
-}
-
-#tabbrowser-tabs:not([movingtab]) > .tabbrowser-tab[beforeselected-visible]::after, #tabbrowser-tabs[movingtab] > .tabbrowser-tab[visuallyselected]::before, .tabbrowser-tab[visuallyselected]::after {
-    opacity: 0 !important;
-}
-.tab-line {
-    height: 0px !important;
-}
-
-.tabbrowser-tab {
-    /* margin-left: 15px !important; */
-    /* margin-right: 4px !important; */
-    font-size: 12px !important;
-}
-.tabbrowser-tab:not([visuallyselected="true"]), .tabbrowser-tab:-moz-lwtheme {
-
-}
-
-tab[selected="true"] .tab-content {
-
-}
-tab[selected="true"] .tab-background {
-
-}
-
-.tabbrowser-tab::after, .tabbrowser-tab::before {
-    border-left: 0 !important;
-    opacity: 0 !important;
-}
-
-.tab-close-button {
-	transition: all 0.3s ease !important;
-  border-radius: 30px !important;
-  transform: translate(-3px,0px);
-}
-.tab-close-button:hover {
-    fill-opacity: 0.2 !important;
-}
-
-.tabbrowser-tab > .tab-stack > .tab-background {
-	border-radius: 50px !important;
-}
-.tabbrowser-tab > .tab-stack > .tab-background:not([selected="true"]) {
-	transition: all 0.3s ease !important;
-}
-.tabbrowser-tab:hover > .tab-stack > .tab-background:not([selected="true"]) {
-    border-color: #000 !important;
-    border-color: rgba(0,0,0, 1) !important;
-}
-
-#TabsToolbar #firefox-view-button[open] > .toolbarbutton-icon,
-.tab-background:is([selected], [multiselected]) {
-  background-color: rgba(255,255,255,.1) !important;
-}
-
-
-/* urlbar */
-#urlbar-background
-{
-    margin-top: 0px !important;
-    margin-bottom: 0px !important;
-
-    padding: 1px !important;
-
-    background: #404040 !important;
-    box-shadow: inset 0px 0px 1px 0px #e3e3e3 !important;
-    border-radius: 30px !important;
-    border-color: #1a1a1a !important;
-}
-
-#urlbar:-moz-lwtheme, #navigator-toolbox #searchbar:-moz-lwtheme
-{
-    color: #FFFFFF !important;
-}
-
-/* bookmarks */
-.bookmark-item{
-  border-radius: 30px !important;
-  transform: translate(0,-1px);
-}
-
-.bookmark-item:hover{
+.bookmark-item:hover {
   /* background-color: transparent !important; */
 }
-
-
-
-.bookmark-item > .toolbarbutton-icon
-{
-
+.bookmark-item:active {
+  color: rgba(160, 160, 160, 0.9) !important;
+}
+.bookmark-item > .toolbarbutton-icon {
   display: flex !important;
   justify-content: center !important;
-
-	border-radius: 100% !important;
-	padding: 6px !important;
-	height: 28px !important;
-	width: 28px !important;
-	color: #f9f9fb !important;
-	background-color: rgba(80,80,80,0.1) !important;
-
+  border-radius: 100% !important;
+  padding: 6px !important;
+  height: 28px !important;
+  width: 28px !important;
+  color: #f9f9fb !important;
+  background-color: rgba(80, 80, 80, 0.1) !important;
   transition-property: background-color;
   transition-duration: 0.5s;
-
 }
-
-.bookmark-item:hover > .toolbarbutton-icon
-{
-	/* background-color: rgba(100,100,100,0.9) !important; */
-	background-color: transparent !important;
+.bookmark-item:hover > .toolbarbutton-icon {
+  /* background-color: rgba(100,100,100,0.9) !important; */
+  background-color: transparent !important;
 }
 .toolbarbutton-text:not([value=""]) {
   padding-right: .75rem !important;
 }
 
-.bookmark-item:active
-{
-	color: rgba(160,160,160,0.9) !important;
-}
-
-#tabs-newtab-button .toolbarbutton-icon {
-  border-radius: 30px !important;
-
-  transition-property: background-color;
-  transition-duration: 0.5s;
-}
-
-#tabs-newtab-button:hover .toolbarbutton-icon {
-  background-color: rgba(130,130,130,0.5) !important;
-}
-
-#tabs-newtab-button:active .toolbarbutton-icon {
-  background-color:  rgba(180,180,180,0.7) !important;
-  color: rgba(110,110,110,0.7) !important;
-}
-
-.toolbarbutton-badge-stack{
-  border-radius: 30px !important;
-}
-
-#tracking-protection-icon-container{
-  border-radius: 30px !important;
-}
-
-#identity-icon-box{
-  border-radius: 30px !important;
-}
-
-#identity-permission-box{
-  border-radius: 30px !important;
-}
-
-#star-button-box{
-  border-radius: 30px !important;
-}
-
-#reload-button{
-   border-radius: 30px !important;
-}
-
-#notification-popup-box{
-  border-radius: 30px !important;
-}
-
-#back-button:hover{
-  border-radius: 30px !important;
-}
-
-#forward-button:hover{
-  border-radius: 30px !important;
-}
-
 #PlacesToolbar {
   padding-bottom: 2px;
 }
-
 #PlacesToolbarItems {
   /* display: flex !important;
   justify-content: center !important; */
 }
 
-tab[pending], #alltabs-popup menuitem[pending] {background-color:  rgba(80, 80, 80,0.3)  !important;}
-
-
-
-
-/*
- * Compact findbar at the top of the window
- * @source https://github.com/Timvde/UserChrome-Tweaks/blob/72145b152c50341f64dcbb00d902b29fbc2a7a10/findbar/compact-findbar-on-top.css
- *
- * Contributor(s): Madis0
- */
-
- .browserContainer > findbar {
-  order: -1 !important;
-  -moz-box-ordinal-group: 0;
-  border: 1px solid threedshadow !important;
-
-  /* Hide the "border" at the top by removing the box-shadow and background-image */
-  border-top: none !important;
-  box-shadow: none !important;
-  background-image: none !important;
-
-  /* Uncomment to add a transition from the top */
-  /*
-  transition: 400ms !important;
-  z-index: 0 !important;
-  */
+/* Pill-shaped toolbar controls */
+.toolbarbutton-badge-stack,
+#tracking-protection-icon-container,
+#identity-icon-box,
+#identity-permission-box,
+#star-button-box,
+#reload-button,
+#notification-popup-box {
+  border-radius: var(--uc-radius-pill) !important;
+}
+#back-button:hover,
+#forward-button:hover {
+  border-radius: var(--uc-radius-pill) !important;
 }
 
-/* Margin from top when hidden (necessary for the transition to work) */
-/*findbar[hidden]{ margin-top: -2em !important; }*/
+
+/* ------------------------------------------------------------
+ * 6. Sidebar
+ * ------------------------------------------------------------ */
+#sidebar {
+  max-width: none !important;
+  min-width: 0px !important;
+  box-shadow: 0px 0px 25px var(--uc-shadow-soft);
+  position: relative;
+}
+#sidebar-box {
+  max-width: none !important;
+}
+#sidebar-splitter {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ------------------------------------------------------------
+ * 7. Find bar
+ *
+ * .browserContainer uses CSS Grid, with children placed into named
+ * grid areas via grid-template-areas — so `order` has no effect on
+ * where the findbar renders (it only reorders auto-placed items, not
+ * explicitly-named grid areas). Instead we override the parent's
+ * grid-template-areas AND grid-template-rows, swapping the "findbar"
+ * row above the "browserstack" (page content) row.
+ *
+ * grid-template-rows sizes rows by POSITION, not by the area name
+ * assigned to them — so the row sizes must be swapped too (row 3 <->
+ * row 4), or whichever area lands in the flexible 1fr row eats the
+ * whole window and the other collapses to auto-height. (Learned this
+ * one the hard way — verified working.)
+ *
+ * If Firefox changes this grid layout in a future version, inspect
+ * .browserContainer in the Browser Toolbox and update both the areas
+ * and the rows below, keeping "findbar" one row above "browserstack"
+ * in both properties.
+ * ------------------------------------------------------------ */
+.browserContainer {
+  grid-template-areas:
+    "devtools-side-start      devtools-side-start-splitter notificationbox          devtools-side-end-splitter devtools-side-end       "
+    "devtools-side-start      devtools-side-start-splitter rdm-toolbar              devtools-side-end-splitter devtools-side-end       "
+    "devtools-side-start      devtools-side-start-splitter findbar                  devtools-side-end-splitter devtools-side-end       "
+    "devtools-side-start      devtools-side-start-splitter browserstack             devtools-side-end-splitter devtools-side-end       "
+    "devtools-bottom-splitter devtools-bottom-splitter     devtools-bottom-splitter devtools-bottom-splitter   devtools-bottom-splitter"
+    "devtools-bottom          devtools-bottom              devtools-bottom          devtools-bottom            devtools-bottom         " !important;
+
+  /* Rows 3 and 4 swapped to match the area swap above */
+  grid-template-rows:
+    auto
+    var(--rdm-toolbar-height, 0)
+    auto
+    minmax(var(--content-area-min-size), 1fr)
+    auto
+    auto !important;
+}
+
+findbar {
+  /* Border/shadow moved to the BOTTOM edge now that it's on top */
+  border: none !important;
+  border-bottom: 1px solid rgba(0, 0, 0, .4) !important;
+  box-shadow: 0px 4px 10px var(--uc-shadow-soft) !important;
+  background-image: none !important;
+  background-color: var(--uc-panel-bg) !important;
+}
+
+.findbar-textbox {
+  font-size: 13px !important;
+}
 
 /* Aligns the close button to the center */
 .findbar-closebutton {
@@ -325,10 +340,16 @@ tab[pending], #alltabs-popup menuitem[pending] {background-color:  rgba(80, 80, 
 }
 
 
-
+/* ------------------------------------------------------------
+ * 8. Miscellaneous / overrides
+ * These come last and win over the equivalent rules in section 3
+ * for #titlebar / #nav-bar / #PersonalToolbar (later rules win when
+ * specificity ties) — kept separate/last deliberately, but flagged
+ * here so it's obvious this is the version that actually renders.
+ * ------------------------------------------------------------ */
 box#navigator-toolbox-background,
 #titlebar {
-  background: linear-gradient(0deg, rgb(30, 30, 30) 0%, rgb(70, 70, 70) 100%)
+  background: linear-gradient(0deg, rgb(30, 30, 30) 0%, rgb(70, 70, 70) 100%);
 }
 toolbar#nav-bar,
 toolbar#PersonalToolbar {
@@ -338,9 +359,8 @@ toolbar#PersonalToolbar {
 #PersonalToolbar {
   padding-inline: 0 !important;
 }
-
 #personal-bookmarks,
 #nav-bar-customization-target,
 #PanelUI-button {
-  background: rgb(40,40,40) !important;
+  background: rgb(40, 40, 40) !important;
 }
